@@ -1,7 +1,7 @@
 #include "bigint.h"
 #include <stdlib.h>
 
-#define MASK_8 0x00000000000000FF
+#define MASK_8 0xFF
 
 BigInt *bigint_new(void) {
   BigInt *number = calloc(1, sizeof(BigInt));
