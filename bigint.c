@@ -1,11 +1,14 @@
 #include "bigint.h"
+#include <stdlib.h>
 
 BigInt *bigint_new(void) {
-  //TODO
+  BigInt *number = calloc(1, sizeof(BigInt));
+  return number;
 }
 
 void bigint_free(BigInt *number) {
-  //TODO
+  free(number->parts);
+  free(number);
 }
 
 BigInt *bigint_convert(long long number) {
