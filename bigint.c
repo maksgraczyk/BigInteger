@@ -72,10 +72,14 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
   int new_parts_count = max(number->parts_count, to_add->parts_count);
   int old_parts_count = number->parts_count;
 
-  if (!realloc(number->parts, new_parts_count * sizeof(uint_t))) {
+  uint_t *realloc_result = realloc(number->parts,
+				   new_parts_count * sizeof(uint_t));
+  
+  if (!realloc_result) {
     return false;
   }
 
+  number->parts = realloc_result;
   number->parts_count = new_parts_count;
 
   for (int i = old_parts_count; i < new_parts_count; i++) {
@@ -93,9 +97,13 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
   if (part_overflow) {
     new_parts_count++;
 
-    if (!realloc(number->parts, new_parts_count * sizeof(uint_t))) {
+    realloc_result = realloc(number->parts, new_parts_count * sizeof(uint_t));
+
+    if (!realloc_result) {
       return false;
     }
+
+    number->parts = realloc_result;
 
     number->parts_count = new_parts_count;
     number->parts[new_parts_count - 1] = 1;
