@@ -136,8 +136,22 @@ void bigint_asr(BigInt *number, int bits) {
 	     >> (BITS_PER_PART_ACTUAL - 1));
 }
 
+BigInt *bigint_copy(BigInt *number) {
+  //TODO
+}
+
 BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
-  
+  BigInt *result = bigint_new(true);
+
+  if (!result) {
+    return NULL;
+  }
+
+  if (multiply_by > 0) {
+    while (multiply_by != 0) {
+      
+    }
+  }
 }
 
 bool bigint_print(BigInt *number, FILE *stream) {
