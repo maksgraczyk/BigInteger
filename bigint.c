@@ -35,7 +35,7 @@ void bigint_free(BigInt *number) {
 }
 
 BigInt *bigint_convert(long long number) {
-  BigInt *result = bigint_new();
+  BigInt *result = bigint_new(false);
 
   if (!result) {
     return NULL;
