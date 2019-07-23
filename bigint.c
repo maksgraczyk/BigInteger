@@ -86,7 +86,7 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
   for (int i = 0; i < to_add->parts_count; i++) {
     uint_t number_part = number->parts[i];
     number->parts[i] = number_part + to_add->parts[i] + part_overflow;
-    part_overflow = number->parts[i] < min(part, to_add->parts[i]);
+    part_overflow = number->parts[i] < min(number_part, to_add->parts[i]);
   }
 
   if (part_overflow) {
