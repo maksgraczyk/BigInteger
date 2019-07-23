@@ -1,4 +1,5 @@
 #include "bigint.h"
+#include "utils.h"
 #include <stdlib.h>
 
 #if BITS_PER_PART_ACTUAL == 16
@@ -57,7 +58,39 @@ BigInt *bigint_convert(long long number) {
 }
 
 bool bigint_add(BigInt *number, BigInt *to_add) {
-  //TODO
+  int new_parts_count = max(number->parts_count, to_add->parts_count);
+  int old_parts_count = number->parts_count;
+
+  if (!realloc(number->parts, new_parts_count * sizeof(uint_t))) {
+    return false;
+  }
+
+  number->parts_count = new_parts_count;
+
+  for (int i = old_parts_count; i < new_parts_count; i++) {
+    number->parts[i] = 0;
+  }
+
+  bool part_overflow = false;
+
+  for (int i = 0; i < to_add->parts_count; i++) {
+    uint_t number_part = number->parts[i];
+    number->parts[i] = number_part + to_add->parts[i] + part_overflow;
+    part_overflow = number->parts[i] < min(part, to_add->parts[i]);
+  }
+
+  if (part_overflow) {
+    new_parts_count++;
+
+    if (!realloc(number->parts, new_parts_count * sizeof(uint_t))) {
+      return false;
+    }
+
+    number->parts_count = new_parts_count;
+    number->parts[new_parts_count - 1] = 1;
+  }
+
+  return true;
 }
 
 void bigint_lsl(BigInt *number, int bits) {
