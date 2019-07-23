@@ -62,20 +62,20 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
 
 void bigint_lsl(BigInt *number, int bits) {
   for (int i = 0; i < bits; i++) {
-    uint8_t carry = 0;
+    uint_t carry = 0;
     for (int j = 0; j < number->parts_count; j++) {
-      uint8_t new_part = (number->parts[j] << 1) | carry;
+      uint_t new_part = (number->parts[j] << 1) | carry;
       carry = number->parts[j] >> (BITS_PER_PART_ACTUAL - 1);
       number->parts[j] = new_part;
     }
   }
 }
 
-static void _bigint_sr(BigInt *number, int bits, uint8_t initial_carry) {
+static void _bigint_sr(BigInt *number, int bits, uint_t initial_carry) {
   for (int i = 0; i < bits; i++) {
-    uint8_t carry = initial_carry;
+    uint_t carry = initial_carry;
     for (int j = number->parts_count - 1; j >= 0; j--) {
-      uint8_t new_part = (number->parts[j] >> 1)
+      uint_t new_part = (number->parts[j] >> 1)
 	| (carry << (BITS_PER_PART_ACTUAL - 1));
       carry = number->parts[j] & MASK_1;
       number->parts[j] = new_part;
