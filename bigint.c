@@ -194,5 +194,15 @@ BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
 }
 
 bool bigint_print(BigInt *number, FILE *stream) {
-  //TODO
+  if (fprintf(stream, "0x") < 0) {
+    return false;
+  }
+  
+  for (int i = number->parts_count - 1; i >= 0; i--) {
+    if (fprintf(stream, "%X", number->parts[i]) < 0) {
+      return false;
+    }
+  }
+
+  return true;
 }
