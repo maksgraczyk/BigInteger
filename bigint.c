@@ -1,6 +1,7 @@
 #include "bigint.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <math.h>
 
 #if BITS_PER_PART_ACTUAL == 16
 #define CONVERSION_MASK 0xFFFF
@@ -164,29 +165,29 @@ BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
   if (!result) {
     return NULL;
   }
-  
-  int shift = 0;
 
-  while (multiply_by != 0) {
-    if (multiply_by & MASK_1) {
-      BigInt *to_add = bigint_copy(number);
+  if (multiply_by != 0) {
+    BigInt *to_add = bigint_copy(number,
+				 (log2l(multiply_by) + 1)
+				 / BITS_PER_PART_ACTUAL + 1);
 
-      if (!to_add) {
-	bigint_free(result);
-	return NULL;
-      }
+    if (!to_add) {
+      bigint_free(result);
+      return NULL;
+    }
 
-      bigint_lsl(to_add, shift);
-
-      if (!bigint_add(result, to_add)) {
+    do {
+      if ((multiply_by & MASK_1) && !bigint_add(result, to_add)) {
 	bigint_free(to_add);
 	bigint_free(result);
 	return NULL;
       }
-    }
+      
+      multiply_by >>= 1;
+      bigint_lsl(to_add, 1);
+    } while (multiply_by != 0);
 
-    multiply_by >>= 1;
-    shift++;
+    bigint_free(to_add);
   }
 
   return result;
