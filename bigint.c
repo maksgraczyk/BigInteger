@@ -136,22 +136,22 @@ void bigint_asr(BigInt *number, int bits) {
 	     >> (BITS_PER_PART_ACTUAL - 1));
 }
 
-BigInt *bigint_copy(BigInt *number) {
+BigInt *bigint_copy(BigInt *number, int extra_zero_parts) {
   BigInt *copy = bigint_new(false);
 
   if (!copy) {
     return NULL;
   }
 
-  copy->parts_count = number->parts_count;
-  copy->parts = malloc(copy->parts_count * sizeof(uint_t));
+  copy->parts_count = number->parts_count + extra_zero_parts;
+  copy->parts = calloc(copy->parts_count, sizeof(uint_t));
 
   if (!copy->parts) {
     bigint_free(copy);
     return NULL;
   }
 
-  for (int i = 0; i < copy->parts_count; i++) {
+  for (int i = 0; i < number->parts_count; i++) {
     copy->parts[i] = number->parts[i];
   }
 

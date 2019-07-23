@@ -98,10 +98,13 @@ of bits.
 void bigint_asr(BigInt *number, int bits);
 
 /*
-Makes a deep copy of a specified BigInt instance.
-Returns NULL if memory allocation required for that fails.
+Makes a deep copy of a specified BigInt instance, creating additional parts
+equal to 0 at the end of the parts array as well if extra_zero_parts is greater
+than 0. The exact number of those parts is determined by extra_zero_parts.
+
+Returns NULL if memory allocation fails.
 */
-BigInt *bigint_copy(BigInt *number);
+BigInt *bigint_copy(BigInt *number, int extra_zero_parts);
 
 /*
 Multiplies a BigInt instance by a long long number in the following way:
