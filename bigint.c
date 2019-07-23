@@ -16,6 +16,14 @@
 
 BigInt *bigint_new(void) {
   BigInt *number = calloc(1, sizeof(BigInt));
+
+  if (!number) {
+    return NULL;
+  }
+
+  number->parts = calloc(1, sizeof(uint_t));
+  number->parts_count = 1;
+  
   return number;
 }
 

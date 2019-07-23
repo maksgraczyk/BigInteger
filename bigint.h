@@ -47,7 +47,8 @@ typedef struct {
 } BigInt;
 
 /*
-Initialises a new BigInt instance with no parts (parts_count = 0, parts = NULL).
+Initialises a new BigInt instance with a single part equal to 0 (parts_count = 1,
+parts = [0]).
 Returns NULL if memory allocation fails.
 */
 BigInt *bigint_new(void);
