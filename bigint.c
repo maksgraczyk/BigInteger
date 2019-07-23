@@ -137,7 +137,25 @@ void bigint_asr(BigInt *number, int bits) {
 }
 
 BigInt *bigint_copy(BigInt *number) {
-  //TODO
+  BigInt *copy = bigint_new(false);
+
+  if (!copy) {
+    return NULL;
+  }
+
+  copy->parts_count = number->parts_count;
+  copy->parts = malloc(copy->parts_count * sizeof(uint_t));
+
+  if (!copy->parts) {
+    bigint_free(copy);
+    return NULL;
+  }
+
+  for (int i = 0; i < copy->parts_count; i++) {
+    copy->parts[i] = number->parts[i];
+  }
+
+  return copy;
 }
 
 BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
