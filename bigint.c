@@ -14,15 +14,17 @@
 
 #define MASK_1 0x1
 
-BigInt *bigint_new(void) {
+BigInt *bigint_new(bool single_part) {
   BigInt *number = calloc(1, sizeof(BigInt));
 
   if (!number) {
     return NULL;
   }
 
-  number->parts = calloc(1, sizeof(uint_t));
-  number->parts_count = 1;
+  if (single_part) {
+    number->parts = calloc(1, sizeof(uint_t));
+    number->parts_count = 1;
+  }
   
   return number;
 }
@@ -135,7 +137,7 @@ void bigint_asr(BigInt *number, int bits) {
 }
 
 BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
-  //TODO
+  
 }
 
 bool bigint_print(BigInt *number, FILE *stream) {
