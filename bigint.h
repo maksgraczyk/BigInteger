@@ -96,14 +96,14 @@ void bigint_asr(BigInt *number, int bits);
 
 /*
 Multiplies a BigInt instance by a long long number in the following way:
-number = number * multiply_by
+result = number * multiply_by
 
-Returns true if the operation succeeds. Otherwise, false is returned.
+Returns the result if the operation succeeds. Otherwise, NULL is returned.
 
 Memory allocated for number will be extended if required. if not enough
 memory can be allocated for the result, the operation fails.
 */
-bool bigint_multiply(BigInt *number, long long multiply_by);
+BigInt *bigint_multiply(BigInt *number, long long multiply_by);
 
 /*
 Prints the number represented by a BigInt instance to a specified stream.

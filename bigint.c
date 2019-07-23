@@ -126,7 +126,7 @@ void bigint_asr(BigInt *number, int bits) {
 	     >> (BITS_PER_PART_ACTUAL - 1));
 }
 
-bool bigint_multiply(BigInt *number, long long multiply_by) {
+BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
   //TODO
 }
 
