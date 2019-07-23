@@ -164,12 +164,32 @@ BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
   if (!result) {
     return NULL;
   }
+  
+  int shift = 0;
 
-  if (multiply_by > 0) {
-    while (multiply_by != 0) {
-      
+  while (multiply_by != 0) {
+    if (multiply_by & MASK_1) {
+      BigInt *to_add = bigint_copy(number);
+
+      if (!to_add) {
+	bigint_free(result);
+	return NULL;
+      }
+
+      bigint_lsl(to_add, shift);
+
+      if (!bigint_add(result, to_add)) {
+	bigint_free(to_add);
+	bigint_free(result);
+	return NULL;
+      }
     }
+
+    multiply_by >>= 1;
+    shift++;
   }
+
+  return result;
 }
 
 bool bigint_print(BigInt *number, FILE *stream) {
