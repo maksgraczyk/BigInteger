@@ -5,8 +5,44 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/*
+You can specify the number of bits per part via the BITS_PER_PART preprocessor
+macro below.
+
+The following values are accepted: 8, 16, 32, 64 (on 64-bit architectures only,
+e.g. x86_64). If a non-supported number is supplied, the library falls back to
+8 bits per part.
+*/
+#define BITS_PER_PART 8
+
+#if BITS_PER_PART == 16
+
+#define BITS_PER_PART_ACTUAL 16
+#define uint_t uint16_t
+#define int_t int16_t
+
+#elif BITS_PER_PART == 32
+
+#define BITS_PER_PART_ACTUAL 32
+#define uint_t uint32_t
+#define int_t int32_t
+
+#elif BITS_PER_PART == 64 && _____LP64_____
+
+#define BITS_PER_PART_ACTUAL 64
+#define uint_t uint64_t
+#define int_t int64_t
+
+#else
+
+#define BITS_PER_PART_ACTUAL 8
+#define uint_t uint8_t
+#define int_t int8_t
+
+#endif
+
 typedef struct {
-  uint8_t *parts;
+  uint_t *parts;
   int parts_count;
 } BigInt;
 
