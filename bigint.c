@@ -43,12 +43,12 @@ BigInt *bigint_convert(long long number) {
   }
   
   long long current_mask = CONVERSION_MASK;
-
+  long long number_copy = number;
   int parts_count = 0;
 
-  while ((number & current_mask) != 0) {
+  while (number_copy != 0) {
     parts_count++;
-    current_mask <<= BITS_PER_PART_ACTUAL;
+    number_copy >>= BITS_PER_PART_ACTUAL;
   }
 
   result->parts_count = parts_count;
@@ -60,8 +60,7 @@ BigInt *bigint_convert(long long number) {
   }
 
   for (int i = 0; i < parts_count; i++) {
-    uint_t part = (number & (CONVERSION_MASK << (BITS_PER_PART_ACTUAL * i)))
-      >> (BITS_PER_PART_ACTUAL * i);
+    uint_t part = (number >> (BITS_PER_PART_ACTUAL * i)) & CONVERSION_MASK;
     result->parts[i] = part;
   }
 
