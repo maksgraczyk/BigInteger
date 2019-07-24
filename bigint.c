@@ -42,7 +42,6 @@ BigInt *bigint_convert(stdnum_t number) {
     return NULL;
   }
 
-  stdnum_t current_mask = CONVERSION_MASK;
   stdnum_t number_copy = number;
   int parts_count = 0;
 
