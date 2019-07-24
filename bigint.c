@@ -68,6 +68,11 @@ BigInt *bigint_convert(long long number) {
   return result;
 }
 
+/*
+Local function: _bit_add
+Adds two numbers using bitwise operations and stores the result under result_ptr.
+Returns true if overflow has occurred. Otherwise, false is returned.
+*/
 static bool _bit_add(uint_t first, uint_t second, uint_t *result_ptr) {
   uint_t result = first ^ second;
   uint_t carry = first & second;
@@ -146,6 +151,11 @@ void bigint_lsl(BigInt *number, int bits) {
   }
 }
 
+/*
+Local function: _bigint_sr
+Performs a right shift on a BigInt instance by a specified number of bits,
+using a specified initial carry.
+*/
 static void _bigint_sr(BigInt *number, int bits, uint_t initial_carry) {
   for (int i = 0; i < bits; i++) {
     uint_t carry = initial_carry;
