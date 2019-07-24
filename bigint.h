@@ -109,7 +109,7 @@ Returns NULL if memory allocation fails.
 BigInt *bigint_copy(BigInt *number, unsigned int extra_zero_parts);
 
 /*
-Multiplies a BigInt instance by a long long number in the following way:
+Multiplies a BigInt instance by a standard number in the following way:
 result = number * multiply_by
 
 Returns the result if the operation succeeds. Otherwise, NULL is returned.
