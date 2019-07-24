@@ -28,5 +28,6 @@ int main(void) {
   bigint_print(number, stdout);
   printf("\n");
 
+  bigint_free(number);
   return EXIT_SUCCESS;
 }
