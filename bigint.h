@@ -119,6 +119,8 @@ BigInt *bigint_multiply(BigInt *number, long long multiply_by);
 
 /*
 Prints the number represented by a BigInt instance to a specified stream.
+Base 16 is used.
+
 Returns true if the operation succeeds. Otherwise, false is returned.
 */
 bool bigint_print(BigInt *number, FILE *stream);

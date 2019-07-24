@@ -238,10 +238,16 @@ bool bigint_print(BigInt *number, FILE *stream) {
   if (fprintf(stream, "0x") < 0) {
     return false;
   }
+
+  bool print_zero_parts = false;
   
   for (int i = number->parts_count - 1; i >= 0; i--) {
-    if (fprintf(stream, "%02x", number->parts[i]) < 0) {
-      return false;
+    if (number->parts[i] != 0 || print_zero_parts) {
+      print_zero_parts = true;
+      
+      if (fprintf(stream, "%02X", number->parts[i]) < 0) {
+	return false;
+      }
     }
   }
 
