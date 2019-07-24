@@ -14,4 +14,4 @@ factorial_test: test.c libbigint.so
 clean:
 	rm -f *.o
 	rm -f libbigint.so
-	rm -f test
+	rm -f factorial_test
