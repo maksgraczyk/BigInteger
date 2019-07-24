@@ -35,15 +35,15 @@ void bigint_free(BigInt *number) {
   free(number);
 }
 
-BigInt *bigint_convert(long long number) {
+BigInt *bigint_convert(stdnum_t number) {
   BigInt *result = bigint_new(false);
 
   if (!result) {
     return NULL;
   }
-  
-  long long current_mask = CONVERSION_MASK;
-  long long number_copy = number;
+
+  stdnum_t current_mask = CONVERSION_MASK;
+  stdnum_t number_copy = number;
   int parts_count = 0;
 
   while (number_copy != 0) {
@@ -139,7 +139,7 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
   return true;
 }
 
-void bigint_lsl(BigInt *number, int bits) {
+void bigint_lsl(BigInt *number, unsigned int bits) {
   for (int i = 0; i < bits; i++) {
     uint_t carry = 0;
     for (int j = 0; j < number->parts_count; j++) {
@@ -155,7 +155,7 @@ Local function: _bigint_sr
 Performs a right shift on a BigInt instance by a specified number of bits,
 using a specified initial carry.
 */
-static void _bigint_sr(BigInt *number, int bits, uint_t initial_carry) {
+static void _bigint_sr(BigInt *number, unsigned int bits, uint_t initial_carry) {
   for (int i = 0; i < bits; i++) {
     uint_t carry = initial_carry;
     for (int j = number->parts_count - 1; j >= 0; j--) {
@@ -167,17 +167,17 @@ static void _bigint_sr(BigInt *number, int bits, uint_t initial_carry) {
   }
 }
 
-void bigint_lsr(BigInt *number, int bits) {
+void bigint_lsr(BigInt *number, unsigned int bits) {
   _bigint_sr(number, bits, 0);
 }
 
-void bigint_asr(BigInt *number, int bits) {
+void bigint_asr(BigInt *number, unsigned int bits) {
   _bigint_sr(number, bits,
 	     number->parts[number->parts_count - 1]
 	     >> (BITS_PER_PART_ACTUAL - 1));
 }
 
-BigInt *bigint_copy(BigInt *number, int extra_zero_parts) {
+BigInt *bigint_copy(BigInt *number, unsigned int extra_zero_parts) {
   BigInt *copy = bigint_new(false);
 
   if (!copy) {
@@ -199,7 +199,7 @@ BigInt *bigint_copy(BigInt *number, int extra_zero_parts) {
   return copy;
 }
 
-BigInt *bigint_multiply(BigInt *number, long long multiply_by) {
+BigInt *bigint_multiply(BigInt *number, stdnum_t multiply_by) {
   BigInt *result = bigint_new(true);
 
   if (!result) {
