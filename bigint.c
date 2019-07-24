@@ -68,6 +68,26 @@ BigInt *bigint_convert(long long number) {
   return result;
 }
 
+static bool _bit_add(uint_t first, uint_t second, uint_t *result_ptr) {
+  uint_t result = first ^ second;
+  uint_t carry = first & second;
+  bool overflow = false;
+
+  while (carry != 0) {
+    if (carry >> (BITS_PER_PART_ACTUAL - 1)) {
+      overflow = true;
+    }
+    
+    uint_t new_result = result ^ (carry << 1);
+    carry = result & (carry << 1);
+    result = new_result;
+  }
+
+  *result_ptr = result;
+
+  return overflow;
+}
+
 bool bigint_add(BigInt *number, BigInt *to_add) {
   int new_parts_count = max(number->parts_count, to_add->parts_count);
   int old_parts_count = number->parts_count;
@@ -88,10 +108,13 @@ bool bigint_add(BigInt *number, BigInt *to_add) {
 
   bool part_overflow = false;
 
-  for (int i = 0; i < to_add->parts_count; i++) {
-    uint_t number_part = number->parts[i];
-    number->parts[i] = number_part + to_add->parts[i] + part_overflow;
-    part_overflow = number->parts[i] < min(number_part, to_add->parts[i]);
+  for (int i = 0; i < number->parts_count; i++) {
+    uint_t part_from_to_add = i < to_add->parts_count ? to_add->parts[i] : 0;
+    bool overflow_in_step_1 = _bit_add(number->parts[i], part_from_to_add,
+				       &number->parts[i]);
+    bool overflow_in_step_2 = _bit_add(number->parts[i], part_overflow,
+				       &number->parts[i]);
+    part_overflow = overflow_in_step_1 || overflow_in_step_2;
   }
 
   if (part_overflow) {
@@ -207,7 +230,7 @@ bool bigint_print(BigInt *number, FILE *stream) {
   }
   
   for (int i = number->parts_count - 1; i >= 0; i--) {
-    if (fprintf(stream, "%X", number->parts[i]) < 0) {
+    if (fprintf(stream, "%02x", number->parts[i]) < 0) {
       return false;
     }
   }
